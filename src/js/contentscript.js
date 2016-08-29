@@ -54,6 +54,13 @@
                     document.body.scrollTop = scrollPos;
                     setCookieValue('gsScrollPos-' + tabId, '');
                 }
+
+                //handle video time
+                var currentTime = getCookieValue('gsVideoTime-' + tabId);
+                if(currentTime){
+                    document.querySelector('video').currentTime = currentTime;
+                    setCookieValue('gsVideoTime-' + tabId, false);
+                }
             }
         });
     }
@@ -267,6 +274,8 @@
         case 'confirmTabSuspend':
             if (request.suspendedUrl) {
                 setCookieValue('gsScrollPos-' + tabId, document.body.scrollTop);
+                var video = document.querySelector('video');
+                if(video) setCookieValue('gsVideoTime-' + tabId, video.currentTime);
                 suspendTab(request.suspendedUrl);
             }
             break;
